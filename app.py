@@ -14,8 +14,8 @@ def generate_answer(question, context):
     input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
     start_scores, end_scores = model(input_ids)
     start_index = torch.argmax(start_scores)
-    end_index = torch.argmax(end_scores) + 1
-    answer = tokenizer.decode(input_ids[0, start_index:end_index], skip_special_tokens=True)
+    end_index = torch.argmax(end_scores)
+    answer = tokenizer.decode(input_ids[0, start_index:end_index+1], skip_special_tokens=True)
     return answer
 
 def main():
