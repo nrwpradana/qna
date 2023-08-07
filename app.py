@@ -1,5 +1,5 @@
 # Install the required libraries
-!pip install transformers torch Flask streamlit
+# !pip install transformers torch Flask streamlit
 
 import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
