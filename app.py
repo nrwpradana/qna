@@ -4,7 +4,7 @@ from transformers import pipeline
 
 # Fungsi untuk menjalankan sistem Q&A
 def run_qa(question, context):
-    nlp = pipeline("question-answering", model="t5-small", tokenizer="bert-base-indonesian-1.5G")
+    nlp = pipeline("question-answering", model="cahya/bert-base-indonesian-1.5G", tokenizer="cahya/bert-base-indonesian-1.5G")
     result = nlp(question=question, context=context)
     return result
 
