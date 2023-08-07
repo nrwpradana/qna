@@ -1,5 +1,2 @@
-transformers 
-torch 
-Flask 
 streamlit
-sentencepiece
+openai
