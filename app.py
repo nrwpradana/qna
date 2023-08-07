@@ -1,46 +1,29 @@
 import streamlit as st
-import openai
+from transformers import pipeline
 
-# Streamlit App
+# Fungsi untuk menjalankan sistem Q&A
+def run_qa(question, context):
+    nlp = pipeline("question-answering", model="bert-base-indonesian-1.5G", tokenizer="bert-base-indonesian-1.5G")
+    result = nlp(question=question, context=context)
+    return result
+
 def main():
-    st.title("Sistem Question & Answer dengan GPT-3.5 Bahasa Indonesia")
-    
-    # Input API key
-    api_key = st.text_input("Masukkan API key OpenAI:", "")
+    st.title("Sistem Pertanyaan dan Jawaban Bahasa Indonesia")
 
-    if api_key:
-        openai.api_key = api_key
-        model_name = 'gpt-3.5-turbo'  # Model Bahasa Indonesia GPT-3.5
+    # Masukkan teks konteks
+    context = st.text_area("Masukkan teks konteks di sini:", value="", height=300)
 
-        # Fungsi untuk mendapatkan jawaban dari pertanyaan menggunakan GPT-3.5
-        def get_answer(question, context):
-            prompt = f"pertanyaan: {question}\nkonteks: {context}\njawaban:"
-            response = openai.Completion.create(
-                engine=model_name,
-                prompt=prompt,
-                max_tokens=150,
-                stop=["\n"],
-                temperature=0.7,
-                n=1,
-            )
-            answer = response.choices[0].text.strip()
-            return answer
+    # Masukkan pertanyaan
+    question = st.text_input("Masukkan pertanyaan Anda di sini:")
 
-        context = st.text_area(
-            "Masukkan teks konteks di sini:",
-            "Pisang adalah buah yang sangat enak dan bergizi. "
-            "Buah ini memiliki kulit kuning dan daging yang manis.",
-        )
-        question = st.text_input("Masukkan pertanyaan Anda di sini:", "Apa warna kulit pisang?")
-
-        if st.button("Jawab"):
-            if context and question:
-                answer = get_answer(question, context)
-                st.markdown(f"**Jawaban:** {answer}")
-            else:
-                st.warning("Masukkan konteks dan pertanyaan terlebih dahulu.")
-    else:
-        st.warning("Masukkan API key OpenAI terlebih dahulu.")
+    if st.button("Jawab"):
+        if not context or not question:
+            st.warning("Mohon masukkan teks konteks dan pertanyaan.")
+        else:
+            with st.spinner("Mencari jawaban..."):
+                result = run_qa(question, context)
+            st.write(f"Jawaban: {result['answer']}")
+            st.write(f"Nilai kepercayaan: {result['score']:.4f}")
 
 if __name__ == "__main__":
     main()
