@@ -6,7 +6,7 @@ from transformers import T5Tokenizer, T5ForConditionalGeneration
 import streamlit as st
 
 def create_qa_model():
-    model_name = "t5-small"
+    model_name = "cahya/bert-base-indonesian-tydiqa"
     tokenizer = T5Tokenizer.from_pretrained(model_name)
     model = T5ForConditionalGeneration.from_pretrained(model_name)
     return model, tokenizer
